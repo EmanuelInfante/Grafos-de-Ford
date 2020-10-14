@@ -1,0 +1,32 @@
+# depslib dependency file v1.0
+1602451774 source:/home/gabriel/Documentos/programacion_cplusplus/Segundo trabajo/Grafos_Ford/main.cpp
+	<iostream>
+	"Grafos.h"
+
+1602452926 /home/gabriel/Documentos/programacion_cplusplus/Segundo trabajo/Grafos_Ford/include/Grafos.h
+	"Nodos.h"
+
+1602435975 /home/gabriel/Documentos/programacion_cplusplus/Segundo trabajo/Grafos_Ford/include/Nodos.h
+	"Arista.h"
+
+1602504485 source:/home/gabriel/Documentos/programacion_cplusplus/Segundo trabajo/Grafos_Ford/src/Nodos.cpp
+	<cstddef>
+	<limits>
+	"Nodos.h"
+	<iostream>
+
+1602432445 /home/gabriel/Documentos/programacion_cplusplus/Segundo trabajo/Grafos_Ford/include/Arista.h
+	"Nodos.h"
+
+1602504480 source:/home/gabriel/Documentos/programacion_cplusplus/Segundo trabajo/Grafos_Ford/src/Arista.cpp
+	"Arista.h"
+	<limits>
+	<iostream>
+	<cstddef>
+
+1602512699 source:/home/gabriel/Documentos/programacion_cplusplus/Segundo trabajo/Grafos_Ford/src/Grafos.cpp
+	<iostream>
+	<string>
+	<limits>
+	"Grafos.h"
+
