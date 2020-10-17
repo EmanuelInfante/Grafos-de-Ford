@@ -1,4 +1,3 @@
-#include <iostream>
 #include <string>
 #include <limits>
 #include "Grafos.h"
@@ -41,37 +40,69 @@ void Grafos::algoritmoBellmanFord(char nombreNodo)
 
     Distancias **distanciasAnterior = this ->inicializarValoresAlgoritmoFord(nombreNodo);
     Distancias **distanciasActual = this ->inicializarValoresAlgoritmoFord(nombreNodo);
+
+    for(int i = 0; i < this ->cantidadNodos; i++)
+        cout << distanciasActual[i] ->nodoDestino ->getNombreNodo() << "     ";
+    cout << endl;
+
     // Recorremos las listas, revisamos la lista 1, y si hay alguna distancia mejorable, se mejora
     do
     {
-       for(int i = 0; i < this ->cantidadNodos; i++)
+        for(int i = 0; i < this ->cantidadNodos; i++)
         {
             // Si es el nodo inicial, continuamos
             if(distanciasActual[i] ->distancia == 0)
                 continue;
+
             for(int j = 0; j < this ->cantidadNodos; j++)
             {
+
+                // Si el nodo actual tiene distancia infinita, se continua
                 if(distanciasActual[j] ->distancia == numeric_limits<int>::max())
                     continue;
+
+                // Obtenemos el costo de el el nodo, desde el nodo A anterior al nodo B actual. Este costo no incluye el valor de los nodos anes de A
                 int costoAux = this ->nodos ->obtenerCostoNodos(distanciasAnterior[j] ->nodoDestino ->getNombreNodo(), distanciasActual[i] ->nodoDestino ->getNombreNodo());
 
+                // SI la distancia total desde el nodo nombreNodo al nodo B es < que la distancia que tienen actualmente, se realiza el cambio
                 if(costoAux +distanciasActual[j] ->distancia < distanciasActual[i] ->distancia && costoAux != numeric_limits<int>::max())
                 {
-                    if(distanciasActual[i] ->distancia == numeric_limits<int>::max())
-                        distanciasActual[i] ->distancia = costoAux +distanciasActual[j] ->distancia;
-                    else
-                        distanciasActual[i] ->distancia = costoAux + distanciasActual[j] ->distancia;
+                    // Se modifica la distancia y el nodo desde donde proviene
+                    distanciasActual[i] ->distancia = costoAux + distanciasActual[j] ->distancia;
                     distanciasActual[i] ->nodoAnterior = distanciasAnterior[j] ->nodoDestino;
                 }
+
+
             }
 
+            // Imprimimos en pantalla por cada iteración el resultado de aplicar el algoritmo
+            if(distanciasActual[i] ->distancia != distanciasAnterior[i] ->distancia || distanciasActual[i] ->nodoAnterior != distanciasAnterior[i] ->nodoAnterior || distanciasActual[i] ->nodoDestino != distanciasAnterior[i] ->nodoDestino)
+            {
+                for(int i = 0; i < this ->cantidadNodos; i++)
+                {
+                    cout << distanciasActual[i] ->nodoAnterior ->getNombreNodo();
+                    if(distanciasActual[i] ->distancia == numeric_limits<int>::max())
+                        cout << "%    ";
+                    else
+                    cout << distanciasActual[i] ->distancia << this ->cantidadEspacios(distanciasActual[i] ->distancia);
+                }
+                cout << endl;
+            }
         }
+
 
     }while(this ->continuarAlgoritmo(distanciasAnterior, distanciasActual));
 
+    // Imprimimos el resultado final del algoritmo
     for(int i = 0; i < this ->cantidadNodos; i++)
-        cout << distanciasActual[i] ->nodoDestino ->getNombreNodo() << ") " << distanciasActual[i] ->nodoAnterior ->getNombreNodo() << " " <<  " " << distanciasActual[i] ->distancia << endl;
-
+        {
+            cout << distanciasActual[i] ->nodoAnterior ->getNombreNodo();
+            if(distanciasActual[i] ->distancia == numeric_limits<int>::max())
+                cout << "%    ";
+            else
+            cout << distanciasActual[i] ->distancia << this ->cantidadEspacios(distanciasActual[i] ->distancia);
+        }
+        cout << endl;
 
 
 }
@@ -80,11 +111,13 @@ void Grafos::algoritmoBellmanFord(char nombreNodo)
 //.------------------------------MÉTODOS PRIVADOS--------------------------
 bool Grafos::continuarAlgoritmo(Distancias **distanciasAnterior, Distancias **distanciasActual)
 {
-    // Método que retorna true si el algoritmo debe continuar, false en caso contrario. Además igual la distancia antigua con la actual
+    /* Método que retorna true si el algoritmo Bellman Ford debe continuar, false en caso contrario.
+     Compara el resultado de la iteración anterio co la actual*/
     bool valorRetorno;
 
     for(int i = 0; i < this ->cantidadNodos; i++)
     {
+        // Si alguna distancia es direferente, para el for y da valor de retorno true, si nunca existe una distancia diferente, da false
         if(distanciasActual[i] ->distancia != distanciasAnterior[i] ->distancia || distanciasActual[i] ->nodoAnterior != distanciasAnterior[i] ->nodoAnterior || distanciasActual[i] ->nodoDestino != distanciasAnterior[i] ->nodoDestino)
         {
             valorRetorno = true;
@@ -94,6 +127,7 @@ bool Grafos::continuarAlgoritmo(Distancias **distanciasAnterior, Distancias **di
             valorRetorno = false;
     }
 
+    // Igualamos la dsitania anterior con la actual
     for(int i = 0; i < this ->cantidadNodos; i++)
     {
         distanciasAnterior[i] ->distancia = distanciasActual[i] ->distancia;
@@ -104,6 +138,27 @@ bool Grafos::continuarAlgoritmo(Distancias **distanciasAnterior, Distancias **di
 
     return valorRetorno;
 
+}
+
+
+string Grafos::cantidadEspacios(int numero)
+{
+    /* Función que retorna la cantidad de espacios en blanco que se debe imprimir en el algoritmo de bellman ford
+    Para mostrar correctamente un número*/
+    int cantidadDigitos = 1;
+
+    while(numero / 10 > 0)
+    {
+        numero = numero / 10;
+        cantidadDigitos++;
+    }
+
+    string cantidadEspacios = "";
+
+    for(int i = 0; i < 5- cantidadDigitos; i++)
+        cantidadEspacios += " ";
+
+    return cantidadEspacios;
 }
 
 
@@ -175,11 +230,7 @@ void Grafos::crearNodosDefecto()
         {
             // Agregamos los nodos y/o arcos
             if(nombresNodosArcos[j][i] != "")
-            {
-
                 this ->nodos ->agregarArco(*nombresNodosArcos[0][i].c_str(), *nombresNodosArcos[j+1][i].c_str(), int(stoi(nombresNodosArcos[j][i])));
-            }
-
             else
                 break;
         }

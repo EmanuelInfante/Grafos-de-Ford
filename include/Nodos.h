@@ -15,19 +15,16 @@ class Nodos
         // Métodos
         void agregarNodo(char nombreNodo);
         void agregarArco(char nombreNodoI, char nombreNodoF, int costo);
-        //int obtenerCostoNodo(char nodo);
         Nodos *obtenerNodo(char nombreNodo);
-        //const Nodos *obtenerNodo(char nombreNodo) const ;
+
 
         //Métodos set
         void setNombreNodo(char nombreNodo) { this ->nombreNodo = nombreNodo; };
-
         void setAristaAdyacente(Arista *aristaAdyacente) { this ->aristaAdyacente = aristaAdyacente; };
 
         //Métodos get
         char getNombreNodo() { return this ->nombreNodo; };
         Nodos* obtenerNodo() { return this; };
-        //const Nodos* obtenerNodo() const { return this; };
         int obtenerCostoNodos(char nodoI, char nodoF);
         Arista *getAristaAdyacente() { return this ->aristaAdyacente; };
         Nodos *getSiguienteNodo() { return this ->siguienteNodo; };
